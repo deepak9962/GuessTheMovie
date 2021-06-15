@@ -22,7 +22,7 @@ public class Game {
      * This is where the actual game process starts and this function gets the letters
      * from users and replaces with the daces to reveal a movie letter.
      * <p>
-     * if the letter is right it according to the movie it selected randomly it will
+     * if the letter is right, according to the movie it selected randomly, it will
      * reveal that movie's letter position and repeats the same process using loops.
      * <p>
      * if the letter is wrong then user looses he guess(es) points and end up loosing
