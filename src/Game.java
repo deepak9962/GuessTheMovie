@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Game {
 
-    private final String movie = GuessTheMovie.searchMovie();
+    private String movie = GuessTheMovie.searchMovie();
 
     // String array for daces
     private final String[] daces = new String[movie.length()];
@@ -141,7 +141,8 @@ public class Game {
         System.out.println("1. Play Again\n2. Exit");
         Scanner scanner = new Scanner(System.in);
         if (scanner.nextInt() == 1) {
-            new Game().startGame();
+            movie = GuessTheMovie.searchMovie();
+            startGame();
         } else {
             System.out.println("Thank you for playing, see you soon!");
         }
