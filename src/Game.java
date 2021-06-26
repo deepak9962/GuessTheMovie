@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class Game {
 
-    private static final GuessTheMovie guessTheMovie = new GuessTheMovie();
+    private final String movie = GuessTheMovie.searchMovie();
 
     // String array for daces
-    private final String[] daces = new String[guessTheMovie.getMovie().length()];
+    private final String[] daces = new String[movie.length()];
 
     // An empty dace
     private final String emptyDace = "_";
@@ -39,11 +39,11 @@ public class Game {
     public void startGame() {
 
         // creates loop for empty daces to get the exact quantity of daces as per movie has letters
-        for (int i = 0; i < guessTheMovie.getMovie().length(); i++) {
+        for (int i = 0; i < movie.length(); i++) {
 
             // Add the spaces if movie has any
-            for (int j = 0; j < guessTheMovie.getMovie().length(); j++) {
-                if (j == guessTheMovie.getMovie().indexOf(" ", j)) {
+            for (int j = 0; j < movie.length(); j++) {
+                if (j == movie.indexOf(" ", j)) {
                     daces[j] = " ";
                 }
             }
@@ -60,7 +60,7 @@ public class Game {
         // loop to get the letter from user and check whether its right or not,
         // and if the letter is right then replace the letter with dace on it's position
         // or if the letter is wrong then decreases the guess(es) points.
-        for (int i = 0; i <= guessTheMovie.getMovie().length(); i++) {
+        for (int i = 0; i <= movie.length(); i++) {
 
             // prints how many guess(es) you have or left
             System.out.println("You have " + count + " guess(es)");
@@ -73,11 +73,18 @@ public class Game {
 
                 // check the letter whether it is the right or wrong
                 // and if the letter is right then replace the letter with dace on it's position.
-                for (int j = 0; j < guessTheMovie.getMovie().length(); j++) {
+                for (int j = 0; j < movie.length(); j++) {
 
                     // searches and compares each letter one by one of the movie and finds the index of
-                    // the letter if the user provided letter matches and replaces the letter.
-                    if (j == guessTheMovie.getMovie().indexOf(guess) && daces[j].contains(emptyDace)) {
+                    // the letter if the user provided letter matches, replace the letter.
+                    //
+                    // since we have exact number of loop as equal to movie has letters.
+                    // it checks whether the letter is guessed already and if it is guessed
+                    // already then decrease the loop by one, so that the loop keeps continues.
+                    if (daces[j].contains(guess)) {
+                        System.out.println("You already guessed it! Please try different letter!");
+                        i--;
+                    } else if (j == movie.indexOf(guess) && daces[j].contains(emptyDace)) {
                         daces[j] = guess;
 
                         // checks if the movie is guessed or if there is no empty space left.
@@ -86,27 +93,20 @@ public class Game {
                         // increase the guess(es) by one if guess is write because below down it
                         // is going to decrease, so we don't want users to loose points for guessing it right.
                         count++;
-                    } else if (j == guessTheMovie.getMovie().indexOf(guess, j) && daces[j].contains(emptyDace)) {
-                        daces[j] = guess;
-                        checkWinner();
                     } else {
-
-                        // since we have exact number of loop as equal to movie has letters.
-                        // it checks whether the letter is guessed already and if it is guessed
-                        // already then decrease the loop by one, so that the loop keeps continues.
-                        if (daces[j].contains(guess)) {
-                            System.out.println("You already guessed it! Please try different letter!");
-                            i--;
+                        if (j == movie.indexOf(guess, j) && daces[j].contains(emptyDace)) {
+                            daces[j] = guess;
+                            checkWinner();
                         }
                     }
                 }
 
-                // Shows the updated string inside the loop
+                // Print the updated string
                 System.out.println(createString());
 
                 // if the guess is wrong this statement prints and
                 // decrease the loop by one, so that the loop keeps continues.
-                if (!(guessTheMovie.getMovie().contains(guess))) {
+                if (!(movie.contains(guess))) {
                     System.out.println("Good guess, Try again!");
                     i--;
                 }
@@ -120,18 +120,30 @@ public class Game {
                     System.out.println("WOW CONGRATULATIONS YOU WON!" +
                             "\n" +
                             "You guessed the right movie!");
-                    System.out.println("The movie was : " + guessTheMovie.getMovie());
+                    System.out.println("The movie was : " + movie);
+                    restart();
                     return;
                 } else if (count == 0) {
                     System.out.println("You used all your guess(es) and not get the movie\n" +
                             "YOU LOOSE!");
-                    System.out.println("The movie was : " + guessTheMovie.getMovie());
+                    System.out.println("The movie was : " + movie);
+                    restart();
                     return;
                 }
             } else {
                 System.out.println("Please enter one letter at a time.");
                 i--;
             }
+        }
+    }
+
+    private void restart() {
+        System.out.println("1. Play Again\n2. Exit");
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.nextInt() == 1) {
+            new Game().startGame();
+        } else {
+            System.out.println("Thank you for playing, see you soon!");
         }
     }
 
@@ -147,7 +159,7 @@ public class Game {
 
         // looping through the length of movie and appending the daces
         // and forming a one simple movie name, without commas
-        for (int i = 0; i < guessTheMovie.getMovie().length(); i++) {
+        for (int i = 0; i < movie.length(); i++) {
             stringBuilder.append(daces[i]);
         }
         return stringBuilder;
@@ -159,14 +171,14 @@ public class Game {
     private void checkWinner() {
 
         // Getting the length of movie
-        int count = guessTheMovie.getMovie().length();
+        int count = movie.length();
 
         // Creating a loop to check if the user guessed the movie or
         // it still empty daces has left.
         // If there is still empty daces left then don't decrease the count
         // of this method (which is movie length) or if there is no
         // empty daces left then set the count to 0 to declare winner
-        for (int i = 0; i < guessTheMovie.getMovie().length(); i++) {
+        for (int i = 0; i < movie.length(); i++) {
             if (!(daces[i].contains(emptyDace))) {
                 count--;
             }

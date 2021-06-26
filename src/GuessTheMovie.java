@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 public class GuessTheMovie {
 
-    private static final Game game = new Game();
-    private final String movie = searchMovie(); // Getting a random movie
+    private static Game game = new Game();
 
     public static void main(String[] args) {
 
@@ -17,7 +16,6 @@ public class GuessTheMovie {
 
         // Calling startGame function from Game.java
         game.startGame();
-
     }
 
     /**
@@ -26,7 +24,7 @@ public class GuessTheMovie {
      *
      * @return a random selected movie
      */
-    private String searchMovie() {
+    public static String searchMovie() {
 
         // ArrayList for string movie
         List<String> itemMovie = new ArrayList<>();
@@ -60,14 +58,11 @@ public class GuessTheMovie {
             }
         }
 
-        // Adding list of movies each in an String array
-        String[] movieList = itemMovie.toArray(new String[0]);
-
         // getting the size of array
-        int length = movieList.length;
+        int length  = itemMovie.size();
 
         // Returning a selected random movie
-        return movieList[position(length)];
+        return itemMovie.get(position(length));
     }
 
     /**
@@ -78,14 +73,5 @@ public class GuessTheMovie {
      */
     private static int position(int length) {
         return (int) ((Math.random() * length) - 1);
-    }
-
-    /**
-     * This function is get called for the movie name.
-     *
-     * @return movie name
-     */
-    public String getMovie() {
-        return movie;
     }
 }
